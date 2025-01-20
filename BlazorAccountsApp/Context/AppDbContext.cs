@@ -11,5 +11,6 @@ namespace BlazorAccountsApp.Context
         }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Branch> branches { get; set; }
+        public DbSet<JournalEntries> journalEntries { get; set; }
     }
 }

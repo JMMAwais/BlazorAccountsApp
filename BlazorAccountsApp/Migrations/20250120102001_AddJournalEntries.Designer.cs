@@ -4,6 +4,7 @@ using BlazorAccountsApp.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAccountsApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250120102001_AddJournalEntries")]
+    partial class AddJournalEntries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,14 +129,9 @@ namespace BlazorAccountsApp.Migrations
                     b.Property<DateOnly?>("date")
                         .HasColumnType("date");
 
-                    b.Property<int?>("oppositeAccountId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AccountId");
-
-                    b.HasIndex("oppositeAccountId");
 
                     b.ToTable("journalEntries");
                 });
@@ -161,13 +159,7 @@ namespace BlazorAccountsApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorAccountsApp.Model.Account", "oppositeAccount")
-                        .WithMany()
-                        .HasForeignKey("oppositeAccountId");
-
                     b.Navigation("account");
-
-                    b.Navigation("oppositeAccount");
                 });
 #pragma warning restore 612, 618
         }
