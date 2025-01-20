@@ -13,6 +13,8 @@
         public decimal? credit { get; set; }
         public bool? IsDeleted { get; set; }
         public decimal? OpeningBalance { get; set; }
+        public int? BranchId { get; set; }
+        public Branch? BranchName { get; set; }
     }
 
     public enum AccountType
