@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="AccountService\" />
+    <Folder Include="AccountService\" />
   </ItemGroup>
 
 </Project>

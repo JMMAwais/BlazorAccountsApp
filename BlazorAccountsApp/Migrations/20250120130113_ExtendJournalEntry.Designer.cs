@@ -4,6 +4,7 @@ using BlazorAccountsApp.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAccountsApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250120130113_ExtendJournalEntry")]
+    partial class ExtendJournalEntry
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -122,46 +125,6 @@ namespace BlazorAccountsApp.Migrations
                     b.ToTable("journalEntry");
                 });
 
-            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntryItems", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("CreditAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("DebutAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("JournalEntriesId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("oppositeAccountId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.HasIndex("JournalEntriesId");
-
-                    b.HasIndex("oppositeAccountId");
-
-                    b.ToTable("journalEntryItems");
-                });
-
             modelBuilder.Entity("BlazorAccountsApp.Model.Account", b =>
                 {
                     b.HasOne("BlazorAccountsApp.Model.Branch", "BranchName")
@@ -175,31 +138,6 @@ namespace BlazorAccountsApp.Migrations
                     b.Navigation("BranchName");
 
                     b.Navigation("account");
-                });
-
-            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntryItems", b =>
-                {
-                    b.HasOne("BlazorAccountsApp.Model.Account", "account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlazorAccountsApp.Model.JournalEntry", "JournalEntries")
-                        .WithMany()
-                        .HasForeignKey("JournalEntriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BlazorAccountsApp.Model.Account", "oppositeAccount")
-                        .WithMany()
-                        .HasForeignKey("oppositeAccountId");
-
-                    b.Navigation("JournalEntries");
-
-                    b.Navigation("account");
-
-                    b.Navigation("oppositeAccount");
                 });
 #pragma warning restore 612, 618
         }

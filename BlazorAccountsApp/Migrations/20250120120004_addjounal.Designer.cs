@@ -4,6 +4,7 @@ using BlazorAccountsApp.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlazorAccountsApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250120120004_addjounal")]
+    partial class addjounal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -97,32 +100,7 @@ namespace BlazorAccountsApp.Migrations
                     b.ToTable("branches");
                 });
 
-            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntry", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateOnly?>("date")
-                        .HasColumnType("date");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("journalEntry");
-                });
-
-            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntryItems", b =>
+            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntries", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,11 +120,14 @@ namespace BlazorAccountsApp.Migrations
                     b.Property<decimal?>("DebutAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("JournalEntriesId")
-                        .HasColumnType("int");
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateOnly?>("date")
+                        .HasColumnType("date");
 
                     b.Property<int?>("oppositeAccountId")
                         .HasColumnType("int");
@@ -155,11 +136,9 @@ namespace BlazorAccountsApp.Migrations
 
                     b.HasIndex("AccountId");
 
-                    b.HasIndex("JournalEntriesId");
-
                     b.HasIndex("oppositeAccountId");
 
-                    b.ToTable("journalEntryItems");
+                    b.ToTable("journalEntries");
                 });
 
             modelBuilder.Entity("BlazorAccountsApp.Model.Account", b =>
@@ -177,7 +156,7 @@ namespace BlazorAccountsApp.Migrations
                     b.Navigation("account");
                 });
 
-            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntryItems", b =>
+            modelBuilder.Entity("BlazorAccountsApp.Model.JournalEntries", b =>
                 {
                     b.HasOne("BlazorAccountsApp.Model.Account", "account")
                         .WithMany()
@@ -185,17 +164,9 @@ namespace BlazorAccountsApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BlazorAccountsApp.Model.JournalEntry", "JournalEntries")
-                        .WithMany()
-                        .HasForeignKey("JournalEntriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("BlazorAccountsApp.Model.Account", "oppositeAccount")
                         .WithMany()
                         .HasForeignKey("oppositeAccountId");
-
-                    b.Navigation("JournalEntries");
 
                     b.Navigation("account");
 
